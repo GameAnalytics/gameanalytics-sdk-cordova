@@ -5,7 +5,11 @@
     "description": "A sample Apache Cordova application that responds to the deviceready event.",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "npm run test:js && npm run test:static",
+        "test:js": "node --test \"test/js/*.test.js\"",
+        "test:static": "node test/static/check.js",
+        "test:android": "gradle -p test/android test",
+        "test:ios": "test/ios/run-unit-tests.sh"
     },
     "author": "Apache Cordova Team",
     "license": "Apache-2.0",
