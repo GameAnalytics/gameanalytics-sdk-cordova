@@ -113,3 +113,13 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+.galog {
+    font-size: 10px;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 50vh;
+    overflow-y: auto;
+    -webkit-user-select: text;
+}
