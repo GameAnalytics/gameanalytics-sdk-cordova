@@ -9,7 +9,7 @@
 {
     NSMutableArray* array = [command.arguments objectAtIndex:0];
     NSMutableArray *dimensions = [[NSMutableArray alloc] init];
-    if(array != nil)
+    if([array isKindOfClass:[NSArray class]])
     {
         for (id tempObject in array)
         {
@@ -26,7 +26,7 @@
 {
     NSMutableArray* array = [command.arguments objectAtIndex:0];
     NSMutableArray *dimensions = [[NSMutableArray alloc] init];
-    if(array != nil)
+    if([array isKindOfClass:[NSArray class]])
     {
         for (id tempObject in array)
         {
@@ -43,7 +43,7 @@
 {
     NSMutableArray* array = [command.arguments objectAtIndex:0];
     NSMutableArray *dimensions = [[NSMutableArray alloc] init];
-    if(array != nil)
+    if([array isKindOfClass:[NSArray class]])
     {
         for (id tempObject in array)
         {
@@ -60,7 +60,7 @@
 {
     NSMutableArray* array = [command.arguments objectAtIndex:0];
     NSMutableArray *currencies = [[NSMutableArray alloc] init];
-    if(array != nil)
+    if([array isKindOfClass:[NSArray class]])
     {
 
         for (id tempObject in array)
@@ -78,7 +78,7 @@
 {
     NSMutableArray* array = [command.arguments objectAtIndex:0];
     NSMutableArray *itemTypes = [[NSMutableArray alloc] init];
-    if(array != nil)
+    if([array isKindOfClass:[NSArray class]])
     {
 
         for (id tempObject in array)
@@ -95,7 +95,7 @@
 - (void)configureBuild:(CDVInvokedUrlCommand*)command
 {
     NSString* build = [command.arguments objectAtIndex:0];
-    if(build == nil)
+    if(![build isKindOfClass:[NSString class]])
     {
         build = @"";
     }
@@ -106,11 +106,12 @@
 
 - (void)configureAutoDetectAppVersion:(CDVInvokedUrlCommand*)command
 {
+    BOOL flag = NO;
     if([command.arguments objectAtIndex:0] && [[command.arguments objectAtIndex:0] isKindOfClass:[NSNumber class]] && ([[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:YES]] || [[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:NO]]))
     {
-        BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
-        [GameAnalytics configureAutoDetectAppVersion:flag];
+        flag = [[command.arguments objectAtIndex:0] boolValue];
     }
+    [GameAnalytics configureAutoDetectAppVersion:flag];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -118,7 +119,7 @@
 - (void)configureUserId:(CDVInvokedUrlCommand*)command
 {
     NSString* uId = [command.arguments objectAtIndex:0];
-    if(uId == nil)
+    if(![uId isKindOfClass:[NSString class]])
     {
         uId = @"";
     }
@@ -131,11 +132,11 @@
 {
     NSMutableDictionary* args = [command.arguments objectAtIndex:0];
 
-    NSString* gameKey = nil;
-    NSString* secretKey = nil;
+    NSString* gameKey = @"";
+    NSString* secretKey = @"";
     NSString* sdkVersion = [NSString stringWithFormat:@"cordova %@", VERSION];
 
-    if(args != nil)
+    if([args isKindOfClass:[NSDictionary class]])
     {
         gameKey = args[@"gameKey"] && [args[@"gameKey"] isKindOfClass:[NSString class]] ? args[@"gameKey"] : @"";
         secretKey = args[@"secretKey"] && [args[@"secretKey"] isKindOfClass:[NSString class]] ? args[@"secretKey"] : @"";
@@ -152,17 +153,17 @@
 {
     NSMutableDictionary* args = [command.arguments objectAtIndex:0];
 
-    NSString* currency = nil;
+    NSString* currency = @"";
     NSInteger amount = 0;
-    NSString* itemType = nil;
-    NSString* itemId = nil;
-    NSString* cartType = nil;
-    NSString* receipt = nil;
+    NSString* itemType = @"";
+    NSString* itemId = @"";
+    NSString* cartType = @"";
+    NSString* receipt = @"";
     BOOL autoFetchReceipt = NO;
     NSString* fieldsString = nil;
     BOOL mergeFields = NO;
 
-    if(args != nil)
+    if([args isKindOfClass:[NSDictionary class]])
     {
         currency = args[@"currency"] && [args[@"currency"] isKindOfClass:[NSString class]] ? args[@"currency"] : @"";
         amount = args[@"amount"] && [args[@"amount"] isKindOfClass:[NSNumber class]] ? [[args valueForKey:@"amount"] intValue] : 0;
@@ -177,7 +178,8 @@
 
     NSDictionary *fields_dict = nil;
     if (fieldsString) {
-        fields_dict = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        id fields = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        fields_dict = [fields isKindOfClass:[NSDictionary class]] ? fields : nil;
     }
 
     if(autoFetchReceipt)
@@ -197,27 +199,28 @@
     NSMutableDictionary* args = [command.arguments objectAtIndex:0];
 
     int flowType = 0;
-    NSString* currency = nil;
+    NSString* currency = @"";
     double amount = 0;
-    NSString* itemType = nil;
-    NSString* itemId = nil;
+    NSString* itemType = @"";
+    NSString* itemId = @"";
     NSString* fieldsString = nil;
     BOOL mergeFields = NO;
 
-    if(args != nil)
+    if([args isKindOfClass:[NSDictionary class]])
     {
-        flowType = args[@"flowType"] ? [[args valueForKey:@"flowType"] intValue] : 0;
-        currency = args[@"currency"];
+        flowType = args[@"flowType"] && ([args[@"flowType"] isKindOfClass:[NSNumber class]] || [args[@"flowType"] isKindOfClass:[NSString class]]) ? [[args valueForKey:@"flowType"] intValue] : 0;
+        currency = args[@"currency"] && [args[@"currency"] isKindOfClass:[NSString class]] ? args[@"currency"] : @"";
         amount = args[@"amount"] && [args[@"amount"] isKindOfClass:[NSNumber class]] ? [[args valueForKey:@"amount"] doubleValue] : 0;
-        itemType = args[@"itemType"];
-        itemId = args[@"itemId"];
+        itemType = args[@"itemType"] && [args[@"itemType"] isKindOfClass:[NSString class]] ? args[@"itemType"] : @"";
+        itemId = args[@"itemId"] && [args[@"itemId"] isKindOfClass:[NSString class]] ? args[@"itemId"] : @"";
         fieldsString = args[@"customFields"] && [args[@"customFields"] isKindOfClass:[NSString class]] ? args[@"customFields"] : @"";
         mergeFields = args[@"mergeFields"] && [args[@"mergeFields"] isKindOfClass:[NSNumber class]] && [args[@"mergeFields"] isEqual:[NSNumber numberWithBool:YES]] ? [[args valueForKey:@"mergeFields"] boolValue] : NO;
     }
 
     NSDictionary *fields_dict = nil;
     if (fieldsString) {
-        fields_dict = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        id fields = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        fields_dict = [fields isKindOfClass:[NSDictionary class]] ? fields : nil;
     }
 
     [GameAnalytics addResourceEventWithFlowType:(GAResourceFlowType)flowType currency:currency amount:@(amount) itemType:itemType itemId:itemId customFields:fields_dict mergeFields:mergeFields];
@@ -230,15 +233,15 @@
     NSMutableDictionary* args = [command.arguments objectAtIndex:0];
 
     int progressionStatus = 0;
-    NSString* progression01 = nil;
-    NSString* progression02 = nil;
-    NSString* progression03 = nil;
+    NSString* progression01 = @"";
+    NSString* progression02 = @"";
+    NSString* progression03 = @"";
     int score = 0;
     BOOL sendScore = NO;
     NSString* fieldsString = nil;
     BOOL mergeFields = NO;
 
-    if(args != nil)
+    if([args isKindOfClass:[NSDictionary class]])
     {
         progressionStatus = args[@"progressionStatus"] && [args[@"progressionStatus"] isKindOfClass:[NSNumber class]] ? [[args valueForKey:@"progressionStatus"] intValue] : 0;
         progression01 = args[@"progression01"] && [args[@"progression01"] isKindOfClass:[NSString class]] ? args[@"progression01"] : @"";
@@ -252,7 +255,8 @@
 
     NSDictionary *fields_dict = nil;
     if (fieldsString) {
-        fields_dict = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        id fields = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        fields_dict = [fields isKindOfClass:[NSDictionary class]] ? fields : nil;
     }
 
     if(sendScore)
@@ -271,13 +275,13 @@
 {
     NSMutableDictionary* args = [command.arguments objectAtIndex:0];
 
-    NSString* eventId = nil;
+    NSString* eventId = @"";
     double value = 0;
     BOOL sendValue = NO;
     NSString* fieldsString = nil;
     BOOL mergeFields = NO;
 
-    if(args != nil)
+    if([args isKindOfClass:[NSDictionary class]])
     {
         eventId = args[@"eventId"] && [args[@"eventId"] isKindOfClass:[NSString class]] ? args[@"eventId"] : @"";
         value = args[@"value"] && [args[@"value"] isKindOfClass:[NSNumber class]] ? [[args valueForKey:@"value"] doubleValue] : 0;
@@ -288,7 +292,8 @@
 
     NSDictionary *fields_dict = nil;
     if (fieldsString) {
-        fields_dict = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        id fields = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        fields_dict = [fields isKindOfClass:[NSDictionary class]] ? fields : nil;
     }
 
     if(sendValue)
@@ -308,11 +313,11 @@
     NSMutableDictionary* args = [command.arguments objectAtIndex:0];
 
     int severity = 0;
-    NSString* message = nil;
+    NSString* message = @"";
     NSString* fieldsString = nil;
     BOOL mergeFields = NO;
 
-    if(args != nil)
+    if([args isKindOfClass:[NSDictionary class]])
     {
         severity = args[@"severity"] && [args[@"severity"] isKindOfClass:[NSNumber class]] ? [[args valueForKey:@"severity"] intValue] : 0;
         message = args[@"message"] && [args[@"message"] isKindOfClass:[NSString class]] ? args[@"message"] : @"";
@@ -322,7 +327,8 @@
 
     NSDictionary *fields_dict = nil;
     if (fieldsString) {
-        fields_dict = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        id fields = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        fields_dict = [fields isKindOfClass:[NSDictionary class]] ? fields : nil;
     }
 
     [GameAnalytics addErrorEventWithSeverity:(GAErrorSeverity)severity message:message customFields:fields_dict mergeFields:mergeFields];
@@ -336,15 +342,15 @@
 
     int adAction = 0;
     int adType = 0;
-    NSString* adSdkName = nil;
-    NSString* adPlacement = nil;
+    NSString* adSdkName = @"";
+    NSString* adPlacement = @"";
     NSInteger duration = 0;
     BOOL sendDuration = NO;
     int noAdReason = 0;
     NSString* fieldsString = nil;
     BOOL mergeFields = NO;
 
-    if(args != nil)
+    if([args isKindOfClass:[NSDictionary class]])
     {
         adAction = args[@"adAction"] && [args[@"adAction"] isKindOfClass:[NSNumber class]] ? [[args valueForKey:@"adAction"] intValue] : 0;
         adType = args[@"adType"] && [args[@"adType"] isKindOfClass:[NSNumber class]] ? [[args valueForKey:@"adType"] intValue] : 0;
@@ -359,7 +365,8 @@
 
     NSDictionary *fields_dict = nil;
     if (fieldsString) {
-        fields_dict = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        id fields = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        fields_dict = [fields isKindOfClass:[NSDictionary class]] ? fields : nil;
     }
 
     if(sendDuration)
@@ -376,44 +383,48 @@
 
 - (void)setEnabledInfoLog:(CDVInvokedUrlCommand*)command
 {
+    BOOL flag = NO;
     if([command.arguments objectAtIndex:0] && [[command.arguments objectAtIndex:0] isKindOfClass:[NSNumber class]] && ([[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:YES]] || [[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:NO]]))
     {
-        BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
-        [GameAnalytics setEnabledInfoLog:flag];
+        flag = [[command.arguments objectAtIndex:0] boolValue];
     }
+    [GameAnalytics setEnabledInfoLog:flag];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setEnabledVerboseLog:(CDVInvokedUrlCommand*)command
 {
+    BOOL flag = NO;
     if([command.arguments objectAtIndex:0] && [[command.arguments objectAtIndex:0] isKindOfClass:[NSNumber class]] && ([[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:YES]] || [[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:NO]]))
     {
-        BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
-        [GameAnalytics setEnabledVerboseLog:flag];
+        flag = [[command.arguments objectAtIndex:0] boolValue];
     }
+    [GameAnalytics setEnabledVerboseLog:flag];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setEnabledManualSessionHandling:(CDVInvokedUrlCommand*)command
 {
+    BOOL flag = NO;
     if([command.arguments objectAtIndex:0] && [[command.arguments objectAtIndex:0] isKindOfClass:[NSNumber class]] && ([[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:YES]] || [[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:NO]]))
     {
-        BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
-        [GameAnalytics setEnabledManualSessionHandling:flag];
+        flag = [[command.arguments objectAtIndex:0] boolValue];
     }
+    [GameAnalytics setEnabledManualSessionHandling:flag];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setEnabledEventSubmission:(CDVInvokedUrlCommand*)command
 {
+    BOOL flag = YES;
     if([command.arguments objectAtIndex:0] && [[command.arguments objectAtIndex:0] isKindOfClass:[NSNumber class]] && ([[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:YES]] || [[command.arguments objectAtIndex:0] isEqual:[NSNumber numberWithBool:NO]]))
     {
-        BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
-        [GameAnalytics setEnabledEventSubmission:flag];
+        flag = [[command.arguments objectAtIndex:0] boolValue];
     }
+    [GameAnalytics setEnabledEventSubmission:flag];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -421,6 +432,10 @@
 - (void)setCustomDimension01:(CDVInvokedUrlCommand*)command
 {
     NSString* dimension = [command.arguments objectAtIndex:0];
+    if(![dimension isKindOfClass:[NSString class]])
+    {
+        dimension = @"";
+    }
     [GameAnalytics setCustomDimension01:dimension];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -429,6 +444,10 @@
 - (void)setCustomDimension02:(CDVInvokedUrlCommand*)command
 {
     NSString* dimension = [command.arguments objectAtIndex:0];
+    if(![dimension isKindOfClass:[NSString class]])
+    {
+        dimension = @"";
+    }
     [GameAnalytics setCustomDimension02:dimension];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -437,6 +456,10 @@
 - (void)setCustomDimension03:(CDVInvokedUrlCommand*)command
 {
     NSString* dimension = [command.arguments objectAtIndex:0];
+    if(![dimension isKindOfClass:[NSString class]])
+    {
+        dimension = @"";
+    }
     [GameAnalytics setCustomDimension03:dimension];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -445,10 +468,15 @@
 - (void)setGlobalCustomEventFields:(CDVInvokedUrlCommand*)command
 {
     NSString* fieldsString = [command.arguments objectAtIndex:0];
+    if(![fieldsString isKindOfClass:[NSString class]])
+    {
+        fieldsString = @"";
+    }
 
     NSDictionary *fields_dict = nil;
     if (fieldsString) {
-        fields_dict = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        id fields = [NSJSONSerialization JSONObjectWithData:[fieldsString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+        fields_dict = [fields isKindOfClass:[NSDictionary class]] ? fields : nil;
     }
 
     [GameAnalytics setGlobalCustomEventFields:fields_dict];
@@ -473,10 +501,10 @@
 - (void)getRemoteConfigsValueAsString:(CDVInvokedUrlCommand*)command
 {
     NSMutableDictionary* args = [command.arguments objectAtIndex:0];
-    NSString* key = nil;
+    NSString* key = @"";
     NSString* defaultValue = nil;
 
-    if(args != nil)
+    if([args isKindOfClass:[NSDictionary class]])
     {
         key = args[@"key"] && [args[@"key"] isKindOfClass:[NSString class]] ? args[@"key"] : @"";
         defaultValue = args[@"defaultValue"] && [args[@"defaultValue"] isKindOfClass:[NSString class]] ? args[@"defaultValue"] : @"";
