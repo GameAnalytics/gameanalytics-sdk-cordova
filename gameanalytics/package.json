@@ -1,6 +1,6 @@
 {
     "name": "cordova-plugin-gameanalytics",
-    "version": "4.2.8",
+    "version": "5.0.0",
     "description": "Official GameAnalytics SDK Cordova Plugin for Android and iOS",
     "cordova": {
         "id": "cordova-plugin-gameanalytics",
@@ -11,7 +11,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/GameAnalytics/GA-SDK-CORDOVA.git"
+        "url": "https://github.com/GameAnalytics/gameanalytics-sdk-cordova.git"
     },
     "keywords": [
         "cordova",
@@ -24,7 +24,7 @@
     "author": "GameAnalytics",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/GameAnalytics/GA-SDK-CORDOVA/issues"
+        "url": "https://github.com/GameAnalytics/gameanalytics-sdk-cordova/issues"
     },
-    "homepage": "https://github.com/GameAnalytics/GA-SDK-CORDOVA"
+    "homepage": "https://github.com/GameAnalytics/gameanalytics-sdk-cordova"
 }

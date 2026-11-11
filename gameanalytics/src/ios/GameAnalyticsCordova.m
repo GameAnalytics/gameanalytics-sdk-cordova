@@ -1,7 +1,7 @@
 #import "GameAnalyticsCordova.h"
-#import "GameAnalytics.h"
+#import <GameAnalytics/GameAnalyticsWrapper.h>
 
-#define VERSION @"4.2.8"
+#define VERSION @"5.0.0"
 
 @implementation GameAnalyticsCordova
 
@@ -18,6 +18,8 @@
         }
     }
     [GameAnalytics configureAvailableCustomDimensions01:dimensions];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)configureAvailableCustomDimensions02:(CDVInvokedUrlCommand*)command
@@ -33,6 +35,8 @@
         }
     }
     [GameAnalytics configureAvailableCustomDimensions02:dimensions];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)configureAvailableCustomDimensions03:(CDVInvokedUrlCommand*)command
@@ -48,6 +52,8 @@
         }
     }
     [GameAnalytics configureAvailableCustomDimensions03:dimensions];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)configureAvailableResourceCurrencies:(CDVInvokedUrlCommand*)command
@@ -64,6 +70,8 @@
         }
     }
     [GameAnalytics configureAvailableResourceCurrencies:currencies];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)configureAvailableResourceItemTypes:(CDVInvokedUrlCommand*)command
@@ -80,6 +88,8 @@
         }
     }
     [GameAnalytics configureAvailableResourceItemTypes:itemTypes];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)configureBuild:(CDVInvokedUrlCommand*)command
@@ -90,6 +100,8 @@
         build = @"";
     }
     [GameAnalytics configureBuild:build];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)configureAutoDetectAppVersion:(CDVInvokedUrlCommand*)command
@@ -99,6 +111,8 @@
         BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
         [GameAnalytics configureAutoDetectAppVersion:flag];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)configureUserId:(CDVInvokedUrlCommand*)command
@@ -109,6 +123,8 @@
         uId = @"";
     }
     [GameAnalytics configureUserId:uId];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)initialize:(CDVInvokedUrlCommand*)command
@@ -128,6 +144,8 @@
 
     [GameAnalytics configureSdkVersion:sdkVersion];
     [GameAnalytics initializeWithGameKey:gameKey gameSecret:secretKey];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)addBusinessEvent:(CDVInvokedUrlCommand*)command
@@ -170,6 +188,8 @@
     {
         [GameAnalytics addBusinessEventWithCurrency:currency amount:amount itemType:itemType itemId:itemId cartType:cartType receipt:receipt customFields:fields_dict mergeFields:mergeFields];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)addResourceEvent:(CDVInvokedUrlCommand*)command
@@ -201,6 +221,8 @@
     }
 
     [GameAnalytics addResourceEventWithFlowType:(GAResourceFlowType)flowType currency:currency amount:@(amount) itemType:itemType itemId:itemId customFields:fields_dict mergeFields:mergeFields];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)addProgressionEvent:(CDVInvokedUrlCommand*)command
@@ -241,6 +263,8 @@
     {
         [GameAnalytics addProgressionEventWithProgressionStatus:(GAProgressionStatus)progressionStatus progression01:progression01 progression02:progression02 progression03:progression03 customFields:fields_dict mergeFields:mergeFields];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)addDesignEvent:(CDVInvokedUrlCommand*)command
@@ -275,6 +299,8 @@
     {
         [GameAnalytics addDesignEventWithEventId:eventId customFields:fields_dict mergeFields:mergeFields];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)addErrorEvent:(CDVInvokedUrlCommand*)command
@@ -300,6 +326,8 @@
     }
 
     [GameAnalytics addErrorEventWithSeverity:(GAErrorSeverity)severity message:message customFields:fields_dict mergeFields:mergeFields];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)addAdEvent:(CDVInvokedUrlCommand*)command
@@ -342,6 +370,8 @@
     {
         [GameAnalytics addAdEventWithAction:(GAAdAction)adAction adType:(GAAdType)adType adSdkName:adSdkName adPlacement:adPlacement noAdReason:(GAAdError)noAdReason customFields:fields_dict mergeFields:mergeFields];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setEnabledInfoLog:(CDVInvokedUrlCommand*)command
@@ -351,6 +381,8 @@
         BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
         [GameAnalytics setEnabledInfoLog:flag];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setEnabledVerboseLog:(CDVInvokedUrlCommand*)command
@@ -360,6 +392,8 @@
         BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
         [GameAnalytics setEnabledVerboseLog:flag];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setEnabledManualSessionHandling:(CDVInvokedUrlCommand*)command
@@ -369,6 +403,8 @@
         BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
         [GameAnalytics setEnabledManualSessionHandling:flag];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setEnabledEventSubmission:(CDVInvokedUrlCommand*)command
@@ -378,24 +414,32 @@
         BOOL flag = [[command.arguments objectAtIndex:0] boolValue];
         [GameAnalytics setEnabledEventSubmission:flag];
     }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setCustomDimension01:(CDVInvokedUrlCommand*)command
 {
     NSString* dimension = [command.arguments objectAtIndex:0];
     [GameAnalytics setCustomDimension01:dimension];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setCustomDimension02:(CDVInvokedUrlCommand*)command
 {
     NSString* dimension = [command.arguments objectAtIndex:0];
     [GameAnalytics setCustomDimension02:dimension];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setCustomDimension03:(CDVInvokedUrlCommand*)command
 {
     NSString* dimension = [command.arguments objectAtIndex:0];
     [GameAnalytics setCustomDimension03:dimension];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setGlobalCustomEventFields:(CDVInvokedUrlCommand*)command
@@ -408,16 +452,22 @@
     }
 
     [GameAnalytics setGlobalCustomEventFields:fields_dict];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)startSession:(CDVInvokedUrlCommand*)command
 {
     [GameAnalytics startSession];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)endSession:(CDVInvokedUrlCommand*)command
 {
     [GameAnalytics endSession];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)getRemoteConfigsValueAsString:(CDVInvokedUrlCommand*)command

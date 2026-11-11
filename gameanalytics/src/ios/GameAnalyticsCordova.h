@@ -1,4 +1,4 @@
-#import <Cordova/CDV.h>
+#import <Cordova/Cordova.h>
 
 @interface GameAnalyticsCordova : CDVPlugin
 
@@ -29,6 +29,7 @@
 - (void)endSession:(CDVInvokedUrlCommand*)command;
 - (void)getRemoteConfigsValueAsString:(CDVInvokedUrlCommand*)command;
 - (void)isRemoteConfigsReady:(CDVInvokedUrlCommand*)command;
+- (void)getRemoteConfigsContentAsString:(CDVInvokedUrlCommand*)command;
 - (void)getABTestingId:(CDVInvokedUrlCommand*)command;
 - (void)getABTestingVariantId:(CDVInvokedUrlCommand*)command;
 
