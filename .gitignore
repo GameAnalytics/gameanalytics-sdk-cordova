@@ -9,7 +9,7 @@
 !/.gitignore
 !/plugin.xml
 !/config.xml
-!/publish_cordova_release.py
+!/CONTRIBUTING.md
 !/res
 !/hooks
 .project
