@@ -1,0 +1,17 @@
+/*
+!/www
+!/gameanalytics
+!/src
+!/README.md
+!/LICENSE
+!/package-lock.json
+!/package.json
+!/.gitignore
+!/plugin.xml
+!/config.xml
+!/publish_cordova_release.py
+!/res
+!/hooks
+.project
+.settings
+.gradle
