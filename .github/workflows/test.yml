@@ -6,8 +6,15 @@ name: Test
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
+
+# One run per commit on a pull request (the push trigger covers main only), and a newer
+# run for the same ref cancels the one it supersedes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -100,6 +107,8 @@ jobs:
         if: runner.os == 'macOS'
         run: test/ios/run-unit-tests.sh "$RUNNER_TEMP/ios-tests"
 
+      # Runs even when the unit tests failed, so one failure does not hide the other result.
+      # The job still fails overall if either step fails.
       - name: iOS bridge compiles against the real GA-SDK-IOS and cordova-ios headers
-        if: runner.os == 'macOS'
+        if: ${{ !cancelled() && runner.os == 'macOS' }}
         run: test/ios/syntax-check.sh "$RUNNER_TEMP/ga-sdk-ios/Library" node_modules/cordova-ios/CordovaLib/include
