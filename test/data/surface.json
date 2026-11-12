@@ -1,0 +1,53 @@
+{
+  "_comment": "The closed set of functions the plugin exposes on the global GameAnalytics object. Every one takes a trailing onComplete callback; the action string equals the function name.",
+  "positional": [
+    "configureAvailableCustomDimensions01",
+    "configureAvailableCustomDimensions02",
+    "configureAvailableCustomDimensions03",
+    "configureAvailableResourceCurrencies",
+    "configureAvailableResourceItemTypes",
+    "configureBuild",
+    "configureAutoDetectAppVersion",
+    "configureUserId",
+    "setEnabledInfoLog",
+    "setEnabledVerboseLog",
+    "setEnabledManualSessionHandling",
+    "setEnabledEventSubmission",
+    "setCustomDimension01",
+    "setCustomDimension02",
+    "setCustomDimension03",
+    "setGlobalCustomEventFields"
+  ],
+  "noArguments": [
+    "startSession",
+    "endSession",
+    "isRemoteConfigsReady",
+    "getRemoteConfigsContentAsString",
+    "getABTestingId",
+    "getABTestingVariantId"
+  ],
+  "options": [
+    "initialize",
+    "getRemoteConfigsValueAsString",
+    "addBusinessEvent",
+    "addResourceEvent",
+    "addProgressionEvent",
+    "addDesignEvent",
+    "addErrorEvent",
+    "addAdEvent"
+  ],
+  "returnValue": [
+    "isRemoteConfigsReady",
+    "getRemoteConfigsContentAsString",
+    "getABTestingId",
+    "getABTestingVariantId",
+    "getRemoteConfigsValueAsString"
+  ],
+  "pinned": {
+    "androidSdk": "com.gameanalytics.sdk:gameanalytics-android:7.2.1",
+    "androidRepository": "https://maven.gameanalytics.com/release",
+    "iosPod": "GA-SDK-IOS",
+    "iosPodSpec": "~> 5.0.2",
+    "engines": { "cordova-android": ">=11.0.0", "cordova-ios": ">=8.0.0" }
+  }
+}

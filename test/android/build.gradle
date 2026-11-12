@@ -1,0 +1,40 @@
+// JVM unit tests for the Android bridge. The real bridge source is compiled
+// against recording stubs of Cordova, Android and the GameAnalytics SDK (see
+// src/stubs), so no device, emulator or Android SDK is needed.
+plugins {
+    id 'java'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/stubs', "${rootDir}/../../gameanalytics/src/android"]
+        }
+    }
+}
+
+dependencies {
+    // A real org.json, because the Android runtime's copy is not on the JVM.
+    implementation 'org.json:json:20240303'
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+    }
+}

@@ -1,0 +1,114 @@
+name: Test
+
+# Unit tests and build checks for the GameAnalytics Cordova plugin.
+# Nothing here needs repository secrets, a device, a simulator, a GUI or code signing,
+# so forks and pull requests from outside the repository run the same checks.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# One run per commit on a pull request (the push trigger covers main only), and a newer
+# run for the same ref cancels the one it supersedes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '24'
+  JAVA_VERSION: '17'
+  GRADLE_VERSION: '8.14.2'
+  CORDOVA_CLI_VERSION: '13.0.0'
+  GA_IOS_SDK_VERSION: '5.0.2'
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        # ubuntu-latest: JavaScript, Android and static checks, and a debug build of the sample.
+        # macos-latest: the same JavaScript and static checks, plus the iOS bridge.
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install the sample's npm dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: JavaScript binding tests
+        run: npm run test:js
+
+      - name: Static cross-layer checks
+        run: npm run test:static
+
+      # ---- Android bridge on the JVM and the sample build (Linux) ----------------------------
+
+      - name: Set up Java
+        if: runner.os == 'Linux'
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Set up Gradle
+        if: runner.os == 'Linux'
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
+
+      - name: Android bridge unit tests (JVM, no device or emulator)
+        if: runner.os == 'Linux'
+        run: gradle --no-daemon -p test/android test
+
+      - name: Install the Cordova CLI
+        if: runner.os == 'Linux'
+        run: npm install --global --no-audit --no-fund cordova@${{ env.CORDOVA_CLI_VERSION }}
+
+      - name: Build the sample for Android (debug, unsigned)
+        if: runner.os == 'Linux'
+        run: |
+          cordova platform add android
+          cordova build android --debug
+
+      # ---- iOS bridge (macOS) --------------------------------------------------------------------
+
+      - name: Cache the GA-SDK-IOS sources
+        if: runner.os == 'macOS'
+        id: ga-ios-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/ga-sdk-ios
+          key: ga-sdk-ios-${{ env.GA_IOS_SDK_VERSION }}-${{ runner.os }}
+
+      - name: Download the GA-SDK-IOS headers
+        if: runner.os == 'macOS' && steps.ga-ios-cache.outputs.cache-hit != 'true'
+        run: |
+          git clone --quiet --depth 1 --branch "$GA_IOS_SDK_VERSION" \
+            https://github.com/GameAnalytics/GA-SDK-IOS.git "$RUNNER_TEMP/ga-sdk-ios"
+
+      - name: iOS bridge unit tests (real bridge, stubbed Cordova and GameAnalytics)
+        if: runner.os == 'macOS'
+        run: test/ios/run-unit-tests.sh "$RUNNER_TEMP/ios-tests"
+
+      # Runs even when the unit tests failed, so one failure does not hide the other result.
+      # The job still fails overall if either step fails.
+      - name: iOS bridge compiles against the real GA-SDK-IOS and cordova-ios headers
+        if: ${{ !cancelled() && runner.os == 'macOS' }}
+        run: test/ios/syntax-check.sh "$RUNNER_TEMP/ga-sdk-ios/Library" node_modules/cordova-ios/CordovaLib/include

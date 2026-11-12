@@ -1,0 +1,49 @@
+{
+  "_comment": "Expected enum values, as defined by the GameAnalytics native SDKs. 'header' is the member name as spelled in the native enums, 'name' is the member name the JavaScript binding exposes. EGAValueType exists in the specification but no plugin function takes it, so it is intentionally absent from the binding.",
+  "EGAResourceFlowType": [
+    { "header": "undefined", "name": "Undefined", "value": 0 },
+    { "header": "source", "name": "Source", "value": 1 },
+    { "header": "sink", "name": "Sink", "value": 2 }
+  ],
+  "EGAProgressionStatus": [
+    { "header": "undefined", "name": "Undefined", "value": 0 },
+    { "header": "start", "name": "Start", "value": 1 },
+    { "header": "complete", "name": "Complete", "value": 2 },
+    { "header": "fail", "name": "Fail", "value": 3 }
+  ],
+  "EGAErrorSeverity": [
+    { "header": "undefined", "name": "Undefined", "value": 0 },
+    { "header": "debug", "name": "Debug", "value": 1 },
+    { "header": "info", "name": "Info", "value": 2 },
+    { "header": "warning", "name": "Warning", "value": 3 },
+    { "header": "error", "name": "Error", "value": 4 },
+    { "header": "critical", "name": "Critical", "value": 5 }
+  ],
+  "EGAAdAction": [
+    { "header": "undefined", "name": "Undefined", "value": 0 },
+    { "header": "clicked", "name": "Clicked", "value": 1 },
+    { "header": "show", "name": "Show", "value": 2 },
+    { "header": "failedshow", "name": "FailedShow", "value": 3 },
+    { "header": "rewardreceived", "name": "RewardReceived", "value": 4 },
+    { "header": "request", "name": "Request", "value": 5 },
+    { "header": "loaded", "name": "Loaded", "value": 6 }
+  ],
+  "EGAAdType": [
+    { "header": "undefined", "name": "Undefined", "value": 0 },
+    { "header": "video", "name": "Video", "value": 1 },
+    { "header": "rewardedvideo", "name": "RewardedVideo", "value": 2 },
+    { "header": "playable", "name": "Playable", "value": 3 },
+    { "header": "interstitial", "name": "Interstitial", "value": 4 },
+    { "header": "offerwall", "name": "OfferWall", "value": 5 },
+    { "header": "banner", "name": "Banner", "value": 6 }
+  ],
+  "EGAAdError": [
+    { "header": "undefined", "name": "Undefined", "value": 0 },
+    { "header": "unknown", "name": "Unknown", "value": 1 },
+    { "header": "offline", "name": "Offline", "value": 2 },
+    { "header": "nofill", "name": "NoFill", "value": 3 },
+    { "header": "internalerror", "name": "InternalError", "value": 4 },
+    { "header": "invalidrequest", "name": "InvalidRequest", "value": 5 },
+    { "header": "unabletoprecache", "name": "UnableToPrecache", "value": 6 }
+  ]
+}

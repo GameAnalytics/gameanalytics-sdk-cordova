@@ -5,19 +5,21 @@
     "description": "A sample Apache Cordova application that responds to the deviceready event.",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "npm run test:js && npm run test:static",
+        "test:js": "node --test \"test/js/*.test.js\"",
+        "test:static": "node test/static/check.js",
+        "test:android": "gradle -p test/android test",
+        "test:ios": "test/ios/run-unit-tests.sh"
     },
     "author": "Apache Cordova Team",
     "license": "Apache-2.0",
     "dependencies": {
-        "cordova-android": "^8.1.0",
-        "cordova-ios": "^5.1.1",
-        "cordova-plugin-gameanalytics": "file:gameanalytics",
-        "cordova-plugin-whitelist": "^1.3.3"
+        "cordova-android": "^15.1.0",
+        "cordova-ios": "^8.2.0",
+        "cordova-plugin-gameanalytics": "file:gameanalytics"
     },
     "cordova": {
         "plugins": {
-            "cordova-plugin-whitelist": {},
             "cordova-plugin-gameanalytics": {}
         },
         "platforms": [

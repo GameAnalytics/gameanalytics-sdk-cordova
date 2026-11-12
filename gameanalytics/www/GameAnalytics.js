@@ -31,7 +31,9 @@ GameAnalytics.EGAAdAction = {
     Clicked: 1,
     Show: 2,
     FailedShow: 3,
-    RewardReceived: 4
+    RewardReceived: 4,
+    Request: 5,
+    Loaded: 6
 };
 
 GameAnalytics.EGAAdError = {
